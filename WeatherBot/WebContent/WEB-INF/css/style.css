@@ -1,0 +1,88 @@
+html, body{
+	background-color: #25CEFF;
+	font-size: 15px;
+	padding: 0;
+	margin: 0;
+	height: 100vh;
+}
+
+h1{
+	color: #FFFFFF;
+	text-align: center;
+	width: 100%;
+}
+
+div#talk_box{
+	position: relative;
+	width: 80%;
+	max-width: 500px;
+	background-color: #FFFFFF;
+	padding: 10px;
+	margin: auto;
+	bottom: 0px;
+	overflow: auto;
+	height: 80%;
+}
+
+div.talk{
+	position: relative;
+	padding: 0;
+	padding: 5px;
+}
+div.talk:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.talk .text{
+	padding: 0.5em 1em;
+	border-radius: 10px;
+}
+
+.talk.user .icon{
+	float:right;
+}
+.talk.user .text{
+	float:right;
+	background-color: #E8FFAB;
+}
+.talk.kumozou .icon{
+	float:left;
+}
+.talk.kumozou .text{
+	float:left;
+	background-color: #F0FEFF;
+}
+
+div.icon{
+	display: inline-block;
+	width: 40px;
+	height: 40px;
+}
+
+.icon img{
+	max-width; 40px;
+	max-height: 40px;
+	-moz-border-radius:50%;-webkit-border-radius:50%;border-radius:50%;
+}
+
+#user_input{
+	box-sizing: border-box;
+	position: absolute;
+	background-color: #FFFFFF;
+	width: 100%;
+	text-align: right;
+	border-top: double 3px #aaa;
+	padding: 20px 30px;
+	bottom: 0px;
+	min-height: 8%;
+}
+
+#user_input input{
+	line-height: 2em;
+}
+
+#user_input input[type="text"]{
+	width:80%;
+}
