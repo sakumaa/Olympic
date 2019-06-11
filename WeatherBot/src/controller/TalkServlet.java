@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.UserDao;
+import model.Talk;
+import service.TalkService;
 
 /**
  * Servlet implementation class TalkServlet
@@ -19,14 +21,6 @@ import dao.UserDao;
 @WebServlet("/TalkServlet")
 public class TalkServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public TalkServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -41,21 +35,28 @@ public class TalkServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		TalkService ts = new TalkService();
 		request.setCharacterEncoding("UTF-8");
 		String talk = request.getParameter("talk");
         String submit = request.getParameter("submit");
-        String sessionTalk = request.getParameter("session_talk");
+        HttpSession session = request.getSession();
 
         try {
             UserDao dao = new UserDao();
 
             if(submit.equals("送信")) {
-                HttpSession session = request.getSession();
-                request.setAttribute("talk", talk);
-                session.setAttribute("session_talk", sessionTalk);
+                String sessionTalk = (String)session.getAttribute("session_talk");
 
                 RequestDispatcher dispatch = null;
                 if (talk != null) {
+                	Talk t_submit = new Talk("user", talk);
+
+                	if(sessionTalk == null) {
+                		sessionTalk = "";
+                	}
+                	sessionTalk += ts.TalkToHtml(t_submit);
+                    session.setAttribute("session_talk", sessionTalk);
+
                     dispatch = request.getRequestDispatcher("Talk.jsp");
                     dispatch.forward(request, response);
                 } else {

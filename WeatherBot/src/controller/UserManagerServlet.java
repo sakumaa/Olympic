@@ -35,7 +35,12 @@ public class UserManagerServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher dispatch = null;
-        dispatch = request.getRequestDispatcher("Login.jsp");
+        HttpSession session = request.getSession();
+        if(session != null) {
+        	doPost(request, response);
+        }else {
+            dispatch = request.getRequestDispatcher("Login.jsp");
+        }
         dispatch.forward(request, response);
 	}
 
@@ -94,6 +99,9 @@ public class UserManagerServlet extends HttpServlet {
         		}else {
         			request.setAttribute("msg", "※ ユーザーが削除できませんでした…");
         		}
+            }else {
+            	isSubmit = true;
+            	request.setAttribute("msg", "");
             }
 
             if(isSubmit) {
@@ -101,7 +109,7 @@ public class UserManagerServlet extends HttpServlet {
                 request.setAttribute("users", users);
 
                 RequestDispatcher dispatch = null;
-                dispatch = request.getRequestDispatcher("LoginOK.jsp");
+                dispatch = request.getRequestDispatcher("UserManager.jsp");
                 dispatch.forward(request, response);
             }else {
             	session.invalidate();

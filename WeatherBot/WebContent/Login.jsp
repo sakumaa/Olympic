@@ -8,12 +8,12 @@
 </head>
 <body>
 <img src="./images/kumozou_icon.jpg" alt="くもぞう" title="くもぞう" />
-    <form method="POST" action="./">
+    <form class="" method="POST" action="./">
         ユーザーID：<input type="text" name="user_id" />
         <br/>
-        パスワード：<input type="password" name="password">
+        パスワード：<input type="password" name="password" />
         <br/>
-        <input type="submit" name="submit" value="ログイン">
+        <input type="submit" name="submit" value="ログイン" />
     </form>
 </body>
 </html>

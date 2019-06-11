@@ -12,6 +12,10 @@ h1{
 	width: 100%;
 }
 
+input [type="submit"]:hover{
+	cursor: hand;
+}
+
 div#talk_box{
 	position: relative;
 	width: 80%;
@@ -85,4 +89,11 @@ div.icon{
 
 #user_input input[type="text"]{
 	width:80%;
+}
+
+.menu_icon{
+	padding: 3px;
+	background-color: #aaa;
+	position: fix;
+	float: right;
 }

@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="model.User" %>
+<%
+String talks = (String)session.getAttribute("session_talk");
+%>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -14,16 +18,12 @@
 <%@include file="./WEB-INF/css/style.css" %>
 </style>
 <body>
+<form id="menu" method="POST" action="UserManagerServlet">
+<input class="menu_icon" type="submit" name="submit" value="メニュー"/>
+</form>
 <h1>くもぞうの部屋</h1>
 <div id="talk_box">
-	<div class="talk kumozou">
-		<div class="icon"><img src="./images/kumozou_icon.jpg" alt="くもぞう" title="くもぞう" /></div>
-		<div class="text">こんにちは！<br>今日の東京都の天気は晴れ。<br>最高気温は20℃、最低気温は15℃だよ。</div>
-	</div>
-	<div class="talk user">
-		<div class="icon"><img src="/images/default_icon.jpg" alt="あなた" title="あなた" /></div>
-		<div class="text">明日の天気を教えて。</div>
-	</div>
+<%= talks != null ? talks : "" %>
 </div>
 <form id="user_input" method="POST" action="TalkServlet">
 	<input type="text" name="talk" placeholder="くもぞうに訊きたいことを入力してください" />

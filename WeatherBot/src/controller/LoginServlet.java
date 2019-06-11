@@ -2,7 +2,6 @@ package controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -44,12 +43,12 @@ public class LoginServlet extends HttpServlet {
         try {
             UserDao dao = new UserDao();
             User loginUser = dao.getLoginUser(userId, password);
-            List<User> users = dao.getUsers();
 
             if(submit.equals("ログイン")) {
-                HttpSession session = request.getSession();
+                HttpSession session = request.getSession(false);
+        		session.invalidate();
+        		session = request.getSession(true);
                 session.setAttribute("login_user", loginUser);
-                request.setAttribute("users", users);
 
                 RequestDispatcher dispatch = null;
                 if (loginUser != null) {
