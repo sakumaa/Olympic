@@ -7,8 +7,7 @@
 <title>ログイン画面</title>
 </head>
 <body>
-<img src="./images/kumozou_icon.jpg" alt="くもぞう" title="くもぞう" />
-    <form class="" method="POST" action="./">
+    <form class="" method="POST" action="./LoginServlet">
         ユーザーID：<input type="text" name="user_id" />
         <br/>
         パスワード：<input type="password" name="password" />

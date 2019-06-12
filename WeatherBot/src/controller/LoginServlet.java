@@ -12,12 +12,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.UserDao;
+import model.Talk;
 import model.User;
+import service.TalkService;
 
 /**
  * Servlet implementation class LoginServlet
  */
-@WebServlet("/")
+@WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -45,6 +47,7 @@ public class LoginServlet extends HttpServlet {
             User loginUser = dao.getLoginUser(userId, password);
 
             if(submit.equals("ログイン")) {
+            	TalkService ts = new TalkService();
                 HttpSession session = request.getSession(false);
         		session.invalidate();
         		session = request.getSession(true);
@@ -52,6 +55,15 @@ public class LoginServlet extends HttpServlet {
 
                 RequestDispatcher dispatch = null;
                 if (loginUser != null) {
+                	String sessionTalk = (String)session.getAttribute("session_talk");
+                	Talk t_submit = new Talk("kumozou", "こんにちは " + loginUser.getName() + "さん！\nぼくに何か用かい？");
+
+                	if(sessionTalk == null) {
+                		sessionTalk = "";
+                	}
+                	sessionTalk += ts.TalkToHtml(t_submit);
+                    session.setAttribute("session_talk", sessionTalk);
+
                     dispatch = request.getRequestDispatcher("Talk.jsp");
                     dispatch.forward(request, response);
                 } else {
