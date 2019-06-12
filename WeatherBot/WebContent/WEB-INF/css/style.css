@@ -40,6 +40,8 @@ div.talk:after {
 }
 
 .talk .text{
+	box-sizing: border-box;
+	max-width: calc(100% - 40px);
 	padding: 0.5em 1em;
 	border-radius: 10px;
 }

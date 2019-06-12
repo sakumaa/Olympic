@@ -48,15 +48,17 @@ public class LoginServlet extends HttpServlet {
 
             if(submit.equals("ログイン")) {
             	TalkService ts = new TalkService();
-                HttpSession session = request.getSession(false);
-        		session.invalidate();
-        		session = request.getSession(true);
+                HttpSession session = request.getSession();
+                if(session != null){
+            		session.invalidate();
+                }
+        		session = request.getSession();
                 session.setAttribute("login_user", loginUser);
 
                 RequestDispatcher dispatch = null;
                 if (loginUser != null) {
                 	String sessionTalk = (String)session.getAttribute("session_talk");
-                	Talk t_submit = new Talk("kumozou", "こんにちは " + loginUser.getName() + "さん！\nぼくに何か用かい？");
+                	Talk t_submit = new Talk("kumozou", "こんにちは " + loginUser.getName() + "さん！<br>今日の東京の天気は曇り。夕方から小雨が降りそうだよ。");
 
                 	if(sessionTalk == null) {
                 		sessionTalk = "";

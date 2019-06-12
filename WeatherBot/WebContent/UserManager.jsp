@@ -39,7 +39,7 @@ String msg = (String)session.getAttribute("msg");
 }
 </style>
 <body>
-    ようこそ、<%= loginUser.getName() %>さん！！
+    ログイン中： <%= loginUser.getName() %> さん
     <br/>
     <span class="msg">${msg}</span>
     <table class="user_list">
@@ -59,7 +59,7 @@ String msg = (String)session.getAttribute("msg");
     </tr>
 	<c:forEach var="user" items="${users}" varStatus="status">
 	<tr>
-		<form method="POST" action="UserManagerServlet">
+		<form method="POST" action="TalkServlet">
 			<td><input name="user_id" type="text" value="<c:out value="${user.id}"/>">
 			<input name="base_id" type="hidden" value="<c:out value="${user.id}"/>"></td>
 			<td><input name="user_name" type="text" value="<c:out value="${user.name}"/>">
@@ -71,7 +71,7 @@ String msg = (String)session.getAttribute("msg");
 	</c:forEach>
     </table>
     <form method="GET" action="LoginServlet">
-        <input type="submit" value="ログイン画面へ">
+        <input type="submit" value="トークに戻る">
     </form>
 </body>
 </html>

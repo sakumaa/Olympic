@@ -1,12 +1,16 @@
 package dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 import com.sun.media.jfxmediaimpl.MediaDisposer.Disposable;
 
@@ -18,25 +22,11 @@ public class UserDao implements Disposable {
     private ResultSet rs = null;
     private PreparedStatement ps = null;
 
-	public UserDao() throws SQLException {
+	public UserDao() throws SQLException, NamingException {
 
-        try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-	        con = DriverManager.getConnection(
-	                "jdbc:mysql://javasystem-demo.cwcncfovruyw.us-east-2.rds.amazonaws.com:3306/WeatherBot","root","javasystem");
-//	        con = DriverManager.getConnection(
-//	                "jdbc:mysql://localhost:3306/javasystem","root","root");
-
-		} catch (InstantiationException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		}
+		Context context = new InitialContext();
+		DataSource ds = (DataSource) context.lookup("java:comp/env/jdbc/jsp");
+		this.con = ds.getConnection();
 
 	}
 
@@ -70,14 +60,22 @@ public class UserDao implements Disposable {
     	return users;
     }
 
-	public int addNewUser(String userId, String userName, String password) throws SQLException {
-		PreparedStatement ps = con.prepareStatement(
-		        "insert into user (user_id, user_name, password) values (?, ?, ?)");
-        ps.setString(1, userId);
-        ps.setString(2, userName);
-        ps.setString(3, password);
+	public int addNewUser(User user) {
+        int result = -1;
+		try {
+        	PreparedStatement ps = con.prepareStatement(
+    		        "insert into user (user_id, user_name, password, role) values (?, ?, ?, ?)");
+			ps.setString(1, user.getId());
+	        ps.setString(2, user.getName());
+	        ps.setString(3, user.getPass());
+	        ps.setString(4, user.getRole());
+	        result = ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
 
-    	return ps.executeUpdate();
+    	return result;
     }
 
 	public int delUser(String userId) throws SQLException {
@@ -88,30 +86,30 @@ public class UserDao implements Disposable {
     	return ps.executeUpdate();
     }
 
-	public int updUser(String baseId, String userId, String userName, String password) throws SQLException {
+	public int updUser(String baseId, User user) throws SQLException {
 		String sql = "update user set ";
 		int prmNum = 1;
 		List<String> prms = new ArrayList<>();
 
-		if(userId.length() > 0) {
+		if(user.getId().length() > 0) {
 			sql += "user_id = ?";
-			prms.add(userId);
+			prms.add(user.getId());
 		}
 
-		if(userName.length() > 0) {
+		if(user.getName().length() > 0) {
 			if(prms.size() > 0) {
 				sql += ", ";
 			}
 			sql += "user_name = ?";
-			prms.add(userName);
+			prms.add(user.getName());
 		}
 
-		if(password.length() > 0) {
+		if(user.getPass().length() > 0) {
 			if(prms.size() > 0) {
 				sql += ", ";
 			}
 			sql += "password = ?";
-			prms.add(password);
+			prms.add(user.getPass());
 		}
 
 		sql += " where user_id = ?";

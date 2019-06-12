@@ -61,14 +61,14 @@ public class UserManagerServlet extends HttpServlet {
 
         try {
             UserDao dao = new UserDao();
-            User loginUser = dao.getLoginUser(userId, password);
+//            User loginUser = dao.getLoginUser(userId, password);
 
             if(submit.equals("登録")) {
             	isSubmit = true;
             	if(userId.length() == 0 || userName.length() == 0 || password.length() == 0) {
             		request.setAttribute("msg", "※ 必要な情報を入力してください！");
             	}else {
-            		if(dao.addNewUser(userId, userName, password) > 0) {
+            		if(dao.addNewUser(new User(userId, userName, password)) > 0) {
             			request.setAttribute("msg", "ユーザーを新規登録しました！");
             		}else {
             			request.setAttribute("msg", "※ ユーザーの新規登録に失敗しました…");
@@ -86,7 +86,7 @@ public class UserManagerServlet extends HttpServlet {
             			userName = "";
             		}
 
-            		if(dao.updUser(baseId, userId, userName, password) > 0) {
+            		if(dao.updUser(baseId, new User(userId, userName, password)) > 0) {
             			request.setAttribute("msg", "ユーザーの更新が完了しました！");
             		}else {
             			request.setAttribute("msg", "※ ユーザーの更新に失敗しました…");
